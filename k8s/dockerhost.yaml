@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dockerhost
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dockerhost
+  template:
+    metadata:
+      labels:
+        app: dockerhost
+    spec:
+      containers:
+        - name: dockerhost-container
+          image: nginx
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: index-config
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
+      volumes:
+        - name: index-config
+          configMap:
+            name: index-config
+            items:
+              - key: index.html
+                path: index.html
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: dockerhost
+  labels:
+    app: dockerhost
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+  selector:
+    app: dockerhost
+
+---
+
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: index-config
+data:
+  index.html: |
+    Hello Docker!
