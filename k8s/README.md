@@ -45,7 +45,11 @@
 
 Создать контейнер на базе созданного образа с помощью команды:
 ```bash
+  #linux
   docker run -v $(pwd)/www:/usr/share/nginx/html -d -p 8080:80 --name dockerhost-container dockerhost
+
+  #windows
+  docker run -v "%cd%"/www:/usr/share/nginx/html -d -p 8080:80 --name dockerhost-container dockerhost
 ```
 
 Проверить, что контейнер работает, перейдя по адресу http://dockerhost:8080 в браузере. 
