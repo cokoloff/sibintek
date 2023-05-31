@@ -546,4 +546,4 @@ docker-compose -f docker-compose-non-dev.yml up
 ```
 
 Заходим в Superset и добавляем нашу базу Clickhouse:
-![alt text](https://github.com/cokoloff/sibintek/blob/main/postgesql/1.png?raw=true)
+![alt text](https://github.com/cokoloff/sibintek/blob/main/clickhouse/1.png?raw=true)
