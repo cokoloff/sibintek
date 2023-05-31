@@ -547,3 +547,9 @@ docker-compose -f docker-compose-non-dev.yml up
 
 Заходим в Superset и добавляем нашу базу Clickhouse:
 ![alt text](https://github.com/cokoloff/sibintek/blob/main/clickhouse/1.png?raw=true)
+
+Запрос 1: Возвращает список, содержащий Ip адреса клиентов (поле ClientIP) и количество записей по каждому адресу. Список должен быть отсортирован по количеству по убыванию и содержать не более 10 строк.
+![alt text](https://github.com/cokoloff/sibintek/blob/main/clickhouse/2.png?raw=true)
+
+Запрос 2: Возвращает список доменов (поле RefererDomain) и количество записей по каждому домену. В список должны попасть только те домены, у которых количество записей превышает значение 3000. Список должен быть отсортирован по количеству по убыванию и содержать не более 10 строк.
+![alt text](https://github.com/cokoloff/sibintek/blob/main/clickhouse/3.png?raw=true)
