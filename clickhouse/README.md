@@ -432,3 +432,83 @@ FROM tutorial.visits_v1
     └─────────┘
     1 row in set. Elapsed: 0.006 sec.
 ```
+
+
+### 2. Задание 2 По данным из набора «visits_v1» составьте следующие запросы:
+
+### 2.1 Запрос 1: Возвращает список, содержащий Ip адреса клиентов (поле ClientIP) и количество записей по каждому адресу. Список должен быть отсортирован по количеству по убыванию и содержать не более 10 строк.
+
+```sql
+SELECT ClientIP, COUNT(*) AS count
+FROM tutorial.visits_v1
+GROUP BY ClientIP
+ORDER BY count DESC
+LIMIT 10;
+
+    Query id: b990b7e7-520c-4176-b74a-adb666da34b1
+        `Title` String,
+    ┌───ClientIP─┬─count─┐
+    │ 2263631863 │  1310 │me,
+    │ 1228771210 │   995 │
+    │  118030920 │   913 │,
+    │  466595077 │   872 │
+    │ 3557957762 │   816 │tring(16),
+    │ 4092462721 │   805 │
+    │  370096382 │   798 │
+    │ 2244345465 │   755 │8,
+    │ 1810835888 │   722 │
+    │ 3074919315 │   712 │
+    └────────────┴───────┘
+    10 rows in set. Elapsed: 0.059 sec. Processed 1.68 million rows, 6.72 MB (28.41 million rows/s., 113.65 MB/s.)
+```
+
+### 2.2 Запрос 2: Возвращает список доменов (поле RefererDomain) и количество записей по каждому домену. В список должны попасть только те домены, у которых количество записей превышает значение 3000. Список должен быть отсортирован по количеству по убыванию и содержать не более 10 строк.
+```sql
+SELECT
+    RefererDomain,
+    count(*) AS count
+FROM tutorial.visits_v1
+GROUP BY RefererDomain
+HAVING count > 3000
+ORDER BY count DESC
+LIMIT 10
+
+    Query id: 196adbfa-524e-4b59-9b6c-947ef39ee3d6
+    ┌─RefererDomain──────┬──count─┐
+    │                    │ 540266 │
+    │ ukr.net.ru.perfb   │ 346237 │
+    │ yandex.ru          │ 290505 │
+    │ go.mail.ru         │  54953 │
+    │ go.mail.yandex.ru  │  35573 │
+    │ news.rostop        │  27633 │
+    │ m.facebook.com     │  26512 │
+    │ go.mail.ru.msn.com │  21371 │
+    │ takep.ru           │  19483 │
+    │ yandex.ua          │  16259 │
+    └────────────────────┴────────┘
+    10 rows in set. Elapsed: 0.040 sec. Processed 1.68 million rows, 29.94 MB (42.45 million rows/s., 756.40 MB/s.)
+```
+
+### 2.3 Запрос 3: Возвращает список с датами и количеством строк по каждой дате, где в поле RefererDomain указано значение: «yandex.com.tr». Список должен содержать данные за период с 18.03.2014 по 22.03.2014 и должен быть отсортирован по датам по возрастанию.
+
+```sql
+SELECT
+    toDate(ClientEventTime) AS Date,
+    COUNT(*) AS cnt
+FROM tutorial.visits_v1
+WHERE ((toDate(ClientEventTime) >= '2014-03-18') AND (toDate(ClientEventTime) <= '2014-03-22')) AND (RefererDomain = 'yandex.com.tr')
+GROUP BY toDate(ClientEventTime)
+ORDER BY toDate(ClientEventTime) ASC
+
+    Query id: 3f7d6ec2-9406-4ed9-9a1a-96857a3341dd
+    ┌───────Date─┬─cnt─┐
+    │ 2014-03-18 │  34 │
+    │ 2014-03-19 │  35 │
+    │ 2014-03-20 │  27 │
+    │ 2014-03-21 │  27 │
+    │ 2014-03-22 │  13 │
+    └────────────┴─────┘
+    5 rows in set. Elapsed: 0.051 sec. Processed 1.68 million rows, 30.84 MB (32.70 million rows/s., 600.08 MB/s.)
+```
+
+### 3. Задание 3 (не обязательно к выполнению, но будет большим плюсом, если выполните) По условиям из задания 2 постройте диаграммы в Superset. В качестве решения предоставьте скриншоты диаграмм с параметрами построения и SQL запросом.
