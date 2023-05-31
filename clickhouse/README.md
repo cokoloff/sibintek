@@ -512,3 +512,38 @@ ORDER BY toDate(ClientEventTime) ASC
 ```
 
 ### 3. Задание 3 (не обязательно к выполнению, но будет большим плюсом, если выполните) По условиям из задания 2 постройте диаграммы в Superset. В качестве решения предоставьте скриншоты диаграмм с параметрами построения и SQL запросом.
+
+### 3.1 Для начала давайте установим и настроим Superset
+
+Клонируем репозиторий Superset в терминале с помощью следующей команды:
+```bash
+git clone https://github.com/apache/superset.git
+```
+
+Переходим в папку, которую мы создали:
+```bash
+cd superset
+docker-compose -f docker-compose-non-dev.yml pull
+```
+
+Теперь необходимо установить драйвес clickhouse, для этого создадим файл requirements-local.txt и укажем наш драйвер:
+```bash
+touch ./docker/requirements-local.txt
+echo "clickhouse-connect" >> ./docker/requirements-local.txt
+```
+
+Также необходимо поправить файл docker-compose-non-dev.yml, добавив:
+```yaml
+superset:
+    ..
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+```
+
+Настройки и подготовки завершены, запускаем Superset:
+```bash
+docker-compose -f docker-compose-non-dev.yml up
+```
+
+Заходим в Superset и добавляем нашу базу Clickhouse:
+![alt text](https://github.com/cokoloff/sibintek/blob/main/postgesql/1.png?raw=true)
